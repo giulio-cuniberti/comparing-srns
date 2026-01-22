@@ -9,12 +9,15 @@
 ##   2. P --> S
 
 
+##           (S,P)
 S1 <- rbind(c(1,0),
             c(0,1))
 
+##           (S,P)
 P1 <- rbind(c(0,1),
             c(1,0))
 
+##            (S,P)
 M1 <- rbind(c(-1,0))
 
 
@@ -35,9 +38,11 @@ orderings1 <- findOrderings(source.complexes = S1, product.complexes = P1)
 ##   2.   I --> S
 
 
+##           (S,I)
 S2 <- rbind(c(1,1),
             c(0,1))
 
+##           (S,I)
 P2 <- rbind(c(0,2),
             c(1,0))
 
@@ -58,14 +63,17 @@ orderings2 <- findOrderings(source.complexes = S2, product.complexes = P2)
 ##   2.   I --> R
 
 
+##           (S,I,R)
 S3 <- rbind(c(1,1,0),
             c(0,1,0))
 
+##           (S,I,R)
 P3 <- rbind(c(0,2,0),
             c(0,0,1))
 
+##            (S,I,R)
 M3 <- rbind(c(-1,0,0),
-            c(0,1,0))
+             c(0,1,0))
 
 
 check3 <- checkOrdering(source.complexes = S3, product.complexes = P3, preorder.matrix = M3)
@@ -88,10 +96,12 @@ orderings3 <- findOrderings(source.complexes = S3, product.complexes = P3)
 ##   3.   C --> E+P
 
 
+##           (S,E,C,P)
 S4 <- rbind(c(1,1,0,0),
             c(0,0,1,0),
             c(0,0,1,0))
 
+##           (S,E,C,P)
 P4 <- rbind(c(0,0,1,0),
             c(1,1,0,0),
             c(0,1,0,1))
@@ -116,18 +126,21 @@ orderings4 <- findOrderings(source.complexes = S4, product.complexes = P4)
 ##   4.   P --> S
 
 
+##           (S,E,C,P)
 S5 <- rbind(c(1,1,0,0),
             c(0,0,1,0),
             c(0,0,1,0),
             c(0,0,0,1))
 
+##           (S,E,C,P)
 P5 <- rbind(c(0,0,1,0),
             c(1,1,0,0),
             c(0,1,0,1),
             c(1,0,0,0))
 
+##            (S,E,C,P)
 M5 <- rbind(c(-1,0,0,0),
-            c(0,0,0,1))
+             c(0,0,0,1))
 
 
 check5 <- checkOrdering(source.complexes = S5, product.complexes = P5, preorder.matrix = M5)
@@ -162,6 +175,8 @@ orderings5 <- findOrderings(source.complexes = S5, product.complexes = P5)
 ##   9.    C3 --> P2+P3
 
 
+##           (P,S,C,P,S,C,P,S,C,P)
+##            0 1 1 1 2 2 2 3 3 3
 S6 <- rbind(c(1,1,0,0,0,0,0,0,0,0),
             c(0,0,1,0,0,0,0,0,0,0),
             c(0,0,1,0,0,0,0,0,0,0),
@@ -172,6 +187,8 @@ S6 <- rbind(c(1,1,0,0,0,0,0,0,0,0),
             c(0,0,0,0,0,0,0,0,1,0),
             c(0,0,0,0,0,0,0,0,1,0))
 
+##           (P,S,C,P,S,C,P,S,C,P)
+##            0 1 1 1 2 2 2 3 3 3
 P6 <- rbind(c(0,0,1,0,0,0,0,0,0,0),
             c(1,1,0,0,0,0,0,0,0,0),
             c(1,0,0,1,0,0,0,0,0,0),
@@ -204,6 +221,7 @@ orderings6 <- findOrderings(source.complexes = S6, product.complexes = P6)
 ##   8. A+B --> A
 
 
+##           (A,B)
 S7 <- rbind(c(0,0),
             c(1,0),
             c(1,0),
@@ -213,6 +231,7 @@ S7 <- rbind(c(0,0),
             c(0,1),
             c(1,1))
 
+##           (A,B)
 P7 <- rbind(c(1,0),
             c(0,0),
             c(2,0),
@@ -230,49 +249,50 @@ orderings7 <- findOrderings(source.complexes = S7, product.complexes = P7)
 ## [8] Example 4.10 (Histone modification circuit) #################################################
 
 ## ordered species: 
-## (D,A,R,P)
 ##   1. D
-##   2. A
-##   3. R
+##   2. R
+##   3. A
 ##   4. P
-    
+
 ## ordered reactions:
-##   1.   D --> A
-##   2. D+A --> 2A
-##   3.   D --> R
-##   4. D+R --> 2R
-##   5.   A --> D
-##   6. A+R --> R+D
-##   7.   R --> D
-##   8. R+A --> A+D
-##   9.   A --> A+P
-##  10. D+P --> P+A
-##  11.   P --> 0
+##   1.   R --> D
+##   2.   D --> R
+##   3.   D --> A
+##   4.   A --> D
+##   5.   A --> A+P
+##   6.   P --> 0
+##   7. D+P --> A+P
+##   8. R+A --> D+R
+##   9. D+R --> 2R
+##  10. R+A --> D+A
+##  11. D+A --> 2A
 
 
-S8 <- rbind(c(1,0,0,0),
-            c(1,1,0,0),
+##           (D,R,A,P)
+S8 <- rbind(c(0,1,0,0),
             c(1,0,0,0),
-            c(1,0,1,0),
-            c(0,1,0,0),
-            c(0,1,1,0),
+            c(1,0,0,0),
             c(0,0,1,0),
-            c(0,1,1,0),
-            c(0,1,0,0),
+            c(0,0,1,0),
+            c(0,0,0,1),
             c(1,0,0,1),
-            c(0,0,0,1))
-
-P8 <- rbind(c(0,1,0,0),
-            c(0,2,0,0),
-            c(0,0,1,0),
-            c(0,0,2,0),
-            c(1,0,0,0),
-            c(1,0,1,0),
-            c(1,0,0,0),
+            c(0,1,1,0),
             c(1,1,0,0),
-            c(0,1,0,1),
-            c(0,1,0,1),
-            c(0,0,0,0))
+            c(0,1,1,0),
+            c(1,0,1,0))
+
+##           (D,R,A,P)
+P8 <- rbind(c(1,0,0,0),
+            c(0,1,0,0),
+            c(0,0,1,0),
+            c(1,0,0,0),
+            c(0,0,1,1),
+            c(0,0,0,0),
+            c(0,0,1,1),
+            c(1,1,0,0),
+            c(0,2,0,0),
+            c(1,0,1,0),
+            c(0,0,2,0))
 
 
 orderings8 <- findOrderings(source.complexes = S8, product.complexes = P8)
@@ -292,11 +312,13 @@ orderings8 <- findOrderings(source.complexes = S8, product.complexes = P8)
 ##   4. A+B --> A
 
 
+##           (A,B)
 S9 <- rbind(c(0,0),
             c(1,0),
             c(0,1),
             c(1,1))
 
+##           (A,B)
 P9 <- rbind(c(1,0),
             c(0,1),
             c(0,0),

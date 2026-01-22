@@ -110,8 +110,8 @@ checkConditions <- function(source.complexes, reaction.vectors, conservation.law
       break
     }
   }
-  return(list(result = result, rates.ineq = ratesIneq, 
-              species.ineq = speciesIneq, first.fail = firstFail))
+  return(list(result = result, rate.inequalities = ratesIneq, 
+              species.inequalities = speciesIneq, first.fail = firstFail))
 }
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -184,31 +184,34 @@ processResults <- function(orderings) {
     output <- list(preorders = preorders, equivalences = equivalences)
     return(output)
   } else {
-    n <- ncol(orderings[[1]]$rates.ineq)
-    d <- ncol(orderings[[1]]$species.ineq)
+    n <- ncol(orderings[[1]]$rate.inequalities)
+    d <- ncol(orderings[[1]]$species.inequalities)
   }
   for (i in 1:(l-1)) {
     reverseIneq <- 0
     stop <- 0
     k <- 1
     while ((k <= n+d) && (stop == 0)) {
-      if (all(cbind(orderings[[i]]$rates.ineq, orderings[[i]]$species.ineq)[, k] == c(0,-1))) {
+      if (all(cbind(orderings[[i]]$rate.inequalities, 
+                    orderings[[i]]$species.inequalities)[, k] == c(0,-1))) {
         reverseIneq <- 1
         stop <- 1
-      } else if (all(cbind(orderings[[i]]$rates.ineq, orderings[[i]]$species.ineq)[, k] == c(1,0))) 
+      } else if (all(cbind(orderings[[i]]$rate.inequalities, 
+                           orderings[[i]]$species.inequalities)[, k] == c(1,0))) 
       {
         stop <- 1
       }
       k <- k+1
     }
     if (reverseIneq == 1) {
-      orderings[[i]]$rates.ineq <- as.matrix(-orderings[[i]]$rates.ineq[c(2,1), ])
-      orderings[[i]]$species.ineq <- as.matrix(-orderings[[i]]$species.ineq[c(2,1), ])
+      orderings[[i]]$rate.inequalities <- as.matrix(-orderings[[i]]$rate.inequalities[c(2,1), ])
+      orderings[[i]]$species.inequalities <- 
+        as.matrix(-orderings[[i]]$species.inequalities[c(2,1), ])
     }
     for (j in (i+1):l) {
-      if (all(orderings[[j]]$rates.ineq == -orderings[[i]]$rates.ineq[c(2,1), ])) {
-        orderings[[j]]$rates.ineq <- -orderings[[j]]$rates.ineq[c(2,1), ]
-        orderings[[j]]$species.ineq <- -orderings[[j]]$species.ineq[c(2,1), ]
+      if (all(orderings[[j]]$rate.inequalities == -orderings[[i]]$rate.inequalities[c(2,1), ])) {
+        orderings[[j]]$rate.inequalities <- -orderings[[j]]$rate.inequalities[c(2,1), ]
+        orderings[[j]]$species.inequalities <- -orderings[[j]]$species.inequalities[c(2,1), ]
       }
     }
   }
@@ -216,7 +219,8 @@ processResults <- function(orderings) {
   l <- length(orderings)
   ordersMatrix <- matrix(nrow = 2*(n+d), ncol = l)
   for (k in 1:l) {
-    ordersMatrix[, k] <- c(abs(orderings[[k]]$rates.ineq), abs(orderings[[k]]$species.ineq))
+    ordersMatrix[, k] <- c(abs(orderings[[k]]$rate.inequalities), 
+                           abs(orderings[[k]]$species.inequalities))
   }
   sortedIndexes <- do.call(order, c(as.data.frame(t(ordersMatrix[1:(2*(n+d)), ])), 
                                     list(decreasing = TRUE)))
@@ -229,11 +233,11 @@ processResults <- function(orderings) {
     return(output)
   }
   for (k in 1:l) {
-    orderings[[k]]$rates.ineq <- toSymbols(orderings[[k]]$rates.ineq)
-    orderings[[k]]$species.ineq <- toSymbols(orderings[[k]]$species.ineq)
+    orderings[[k]]$rate.inequalities <- toSymbols(orderings[[k]]$rate.inequalities)
+    orderings[[k]]$species.inequalities <- toSymbols(orderings[[k]]$species.inequalities)
   }
   for (k in 1:l) {
-    vec <- orderings[[k]]$species.ineq
+    vec <- orderings[[k]]$species.inequalities
     if (any(vec == '+' | vec == '-')) {
       preorders <- append(preorders, list(orderings[[k]]))
     } else {
@@ -255,8 +259,8 @@ checkOrdering <- function(source.complexes, product.complexes, preorder.matrix) 
   conservation.laws <- RandC$C
   # everything can be now computed with the function checkConditions()
   output <- checkConditions(source.complexes, reaction.vectors, conservation.laws, preorder.matrix)
-  output$rates.ineq <- toSymbols(output$rates.ineq)
-  output$species.ineq <- toSymbols(output$species.ineq)
+  output$rate.inequalities <- toSymbols(output$rate.inequalities)
+  output$species.inequalities <- toSymbols(output$species.inequalities)
   if (output$result == 1) {
     cat('\n YES: the trajectories can be ordered almost surely as the rate constants vary \n\n')
   } else {
@@ -313,8 +317,8 @@ findOrderings <- function(source.complexes, product.complexes) {
       check <- checkConditions(source.complexes, reaction.vectors, conservation.laws, 
                                preorder.matrix)
       if (check$result == 1) {
-        orderings[[length(orderings)+1]] <- list(rates.ineq = check$rates.ineq, 
-                                                 species.ineq = check$species.ineq)
+        orderings[[length(orderings)+1]] <- list(rate.inequalities = check$rate.inequalities, 
+                                                 species.inequalities = check$species.inequalities)
       }
       progress <- floor(steps*(sum((2^d):(i+1))-j)/sum((2^d):1))
       if (progress > lastPrinted) {
