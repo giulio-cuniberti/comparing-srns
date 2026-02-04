@@ -351,4 +351,3 @@ findOrderings <- function(source.complexes, product.complexes) {
   return(orderings)
 }
 
-

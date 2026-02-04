@@ -327,4 +327,3 @@ P9 <- rbind(c(1,0),
 
 orderings9 <- findOrderings(source.complexes = S9, product.complexes = P9)
 
-
