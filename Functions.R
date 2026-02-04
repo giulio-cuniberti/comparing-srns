@@ -22,15 +22,15 @@ populateAB <- function (conservation.laws, preorder.matrix) {
       D <- cbind(t(conservation.laws), -t(conservation.laws), t(preorder.matrix), -N[i, ])
       e <- rep(0, d)
       e[j] <- 1
-      if (A[m+1,j] == 1) {
-        A[i,j] <- 1  # no need to solve lp problem in this case
+      if (A[m+1, j] == 1) {
+        A[i, j] <- 1  # no need to solve lp problem in this case
       } else if (lp('min', rep(0, ncol(D)), D, rep("=", d), e)$status == 0) {
-        A[i,j] <- 1
+        A[i, j] <- 1
       }
-      if (B[m+1,j] == 1) {
-        B[i,j] <- 1  # no need to solve lp problem in this case
+      if (B[m+1, j] == 1) {
+        B[i, j] <- 1  # no need to solve lp problem in this case
       } else if (lp('min', rep(0, ncol(D)), D, rep("=", d), -e)$status == 0) {
-        B[i,j] <- 1
+        B[i, j] <- 1
       }
     }
   }
@@ -72,14 +72,14 @@ checkConditions <- function(source.complexes, reaction.vectors, conservation.law
       check <- 1
     } else if (all(A[m+1, ]*source.complexes[r, ] == source.complexes[r, ])) {
       check <- 1
-      ratesIneq[1,r] <- 1
+      ratesIneq[1, r] <- 1
     } else {
       for (i in 1:m) {
         e <- rep(0, m)
         e[i] <- 1
         if (all(pos == e) && all(A[i, ]*source.complexes[r, ] == source.complexes[r, ])) {
           check <- 1
-          ratesIneq[1,r] <- 1
+          ratesIneq[1, r] <- 1
         }
       }
     }
@@ -93,14 +93,14 @@ checkConditions <- function(source.complexes, reaction.vectors, conservation.law
       check <- 2
     } else if (all(B[m+1, ]*source.complexes[r, ] == source.complexes[r, ])) {
       check <- 2
-      ratesIneq[2,r] <- -1
+      ratesIneq[2, r] <- -1
     } else {
       for (i in 1:m) {
         e <- rep(0, m)
         e[i] <- 1
         if (all(neg == e) && all(B[i, ]*source.complexes[r, ] == source.complexes[r, ])) {
           check <- 2
-          ratesIneq[2,r] <- -1
+          ratesIneq[2, r] <- -1
         }
       }
     }
@@ -133,7 +133,7 @@ populateRC <- function(source.complexes, product.complexes) {
   } else {
     conservation.laws <- t(Ct)
   }
-  # rounding should prevent NUMERICAL ISSUES (such as getting e-16 instead of 0) 
+  # rounding should prevent NUMERICAL ISSUES (such as getting 1e-16 instead of 0) 
   conservation.laws <- round(conservation.laws, digits = 10)
   return(list(R = reaction.vectors, C = conservation.laws))
 }
@@ -295,8 +295,6 @@ findOrderings <- function(source.complexes, product.complexes) {
   t0 <- Sys.time()
   cat(paste0(c('> PROGRESS ', rep(' ', steps-5), '%      TIME NOW     END TIME\n'), collapse = ''))
   elapsed <- 0
-  # cat(paste0(c('[', rep('-', steps), ']   ', 0, '      ', 
-  #              sprintf("%.2f", elapsed), '        ?\n'), collapse = ''))
   cat(paste0(c('[', rep('-', steps), ']    ', 0, '      ',
                format(Sys.time(), "%H:%M:%S"), '     ESTIMATE\n'), collapse = ''))
   lastPrinted <- 0
@@ -325,22 +323,6 @@ findOrderings <- function(source.complexes, product.complexes) {
         elapsed <- Sys.time() - t0
         remaining <- elapsed/progress*(steps-progress)
         endtime <- Sys.time() + remaining
-        # if (100*progress/steps < 10) {
-        #   cat(paste0(c('[', rep('|', progress), rep('-', steps-progress),
-        #                ']   ', 100*progress/steps, '      ', 
-        #                sprintf("%.2f", elapsed), '     ', 
-        #                sprintf("%.2f", remaining), '\n'), collapse = ''))
-        # } else if (100*progress/steps == 100) {
-        #   cat(paste0(c('[', rep('|', progress), rep('-', steps-progress),
-        #                ']   ', 100*progress/steps, '    ', 
-        #                sprintf("%.2f", elapsed), '     ', 
-        #                sprintf("%.2f", remaining), '\n'), collapse = ''))
-        # } else {
-        #   cat(paste0(c('[', rep('|', progress), rep('-', steps-progress),
-        #                ']   ', 100*progress/steps, '     ', 
-        #                sprintf("%.2f", elapsed), '     ', 
-        #                sprintf("%.2f", remaining), '\n'), collapse = ''))
-        # }
         if (100*progress/steps < 10) {
           cat(paste0(c('[', rep('|', progress), rep('-', steps-progress),
                        ']    ', 100*progress/steps, '      ', 
