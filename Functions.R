@@ -262,9 +262,10 @@ checkOrdering <- function(source.complexes, product.complexes, preorder.matrix) 
   output$rate.inequalities <- toSymbols(output$rate.inequalities)
   output$species.inequalities <- toSymbols(output$species.inequalities)
   if (output$result == 1) {
-    cat('\n YES: the trajectories can be ordered almost surely as the rate constants vary \n\n')
+    cat('\n YES: the sufficient conditions of Theorem 4.1 were verified
+      the trajectories can thus be ordered under the stated assumptions \n\n')
   } else {
-    cat('\n NO: the trajectories cannot be ordered almost surely as the rate constants vary \n\n')
+    cat('\n NO: the sufficient conditions of Theorem 4.1 were not verified for this matrix \n\n')
   }
   return(output)
 }
