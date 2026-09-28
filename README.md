@@ -1,6 +1,6 @@
 # Comparing SRNs
 
-This repository contains the R implementation for the paper **"Stochastic ordering tools for continuous-time Markov chains and applications to reaction network models"** by Daniele Cappelletti, Giulio Cuniberti, and Paola Siri (https://doi.org/10.48550/arXiv.2604.00756). The code consists of two main scripts:
+This repository contains the R implementation for the paper **"Computable sufficient conditions for comparing stochastic reaction networks with mass-action or monotone kinetics"** by Daniele Cappelletti, Giulio Cuniberti, and Paola Siri (https://doi.org/10.48550/arXiv.2604.00756). The code consists of two main scripts:
 - `Examples.R`
 - `Functions.R`
 
