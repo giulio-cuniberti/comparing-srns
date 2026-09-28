@@ -1,6 +1,6 @@
 # BioModels sweep
 
-This folder contains the inputs, code and results for the computation-time table in the paper. The search checks the sufficient conditions of Theorem 4.1 on 205 reaction networks with at most ten species. It finds at least one non-trivial comparison for 133 networks; an unsuccessful search does not rule out other comparisons.
+This folder contains the inputs, code and results for the computation-time table in the paper. The search checks the sufficient conditions of Theorem 4.1 on 205 reaction networks obtained from [BioModels](https://www.ebi.ac.uk/biomodels/), with at most ten species. It finds at least one non-trivial comparison for 133 networks; an unsuccessful search does not rule out other comparisons.
 
 ## Files
 
